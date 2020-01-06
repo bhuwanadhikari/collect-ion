@@ -8,6 +8,9 @@ import time
 import json
 import urlparse
 
+with open('members.json') as membersList:
+    members = json.load(membersList)
+
 
 # driver = webdriver.Chrome()
 # driver.get("http://www.instagram.com")
@@ -21,26 +24,22 @@ import urlparse
 
 def delay( timeValue):
         time.sleep(timeValue)
+        
+## global variables here
+startUrl = 'https://www.facebook.com/photo.php?fbid=2193040064331951&set=a.1377214452581187&type=3&theater'
+myId = 'asdf.asdfw.asdf'
+myEmail = 'teasdfasst@gmail.com'
+myPassword = 'asdfasdfasddf'
 
 class instaBot():
     def __init__(self, email, password):
         
-        option = Options()
-
-        option.add_argument("--disable-infobars")
-        option.add_argument("start-maximized")
-
-        # Pass the argument 1 to allow and 2 to block
-        option.add_experimental_option("prefs", { 
-            "profile.default_content_setting_values.notifications": 1 
-        })
         
         self.browser = webdriver.Chrome()
         self.email = email
         self.password = password
         self.sampleFriends = []
-    
-
+        
 
     def signIn(self):
         self.browser.get('https://www.facebook.com/')
@@ -60,11 +59,11 @@ class instaBot():
         delay(2)
     
     def goProfile(self):
-        self.browser.get('https://www.instagram.com/luminousbhuwan/')
+        # self.browser.get('https://www.instagram.com/testman/')
         delay(2)
         
     def goToPhoto(self):
-        self.browser.get('https://www.facebook.com/photo.php?fbid=2193040064331951&set=a.1377214452581187&type=3&theater')
+        self.browser.get(startUrl)
         # see likers
         delay(2)
         likeNumber1 = self.browser.find_elements_by_class_name("_3dlf")[1]
@@ -77,11 +76,14 @@ class instaBot():
             try:
                 delay(3)
                 samples =  self.browser.find_elements_by_class_name("uiMorePagerPrimary")[0]
-                jsCode = "document.getElementsByClassName('uiMorePagerPrimary')[0].click();"
+                samples =  self.browser.find_elements_by_class_name("pam")[0]
+                samples =  self.browser.find_elements_by_class_name("uiBoxLightblue")[0]
+                jsCode = "document.getElementsByClassName('uiBoxLightblue pam uiMorePagerPrimary')[0].click();"
                 self.browser.execute_script(jsCode)
+                print("Loading more samples of the start photo")
             except:
-                print("No more samples to load in the page")
                 moreSamples = False
+                print("No more samples to load in the page")
             
         #get primary likers
         delay(2)
@@ -93,23 +95,29 @@ class instaBot():
             
             
         mainData = []
-        for url in sampleUrls:
+        # for url in sampleUrls:
+        for url in members:
             
             #visit one of the liker
             # self.browser.get(url)
             
             #get username of liker
-            sampleId = urlparse.urlparse(url).path
-            samplePhotoData = {}
             
+            #-----------------------
+            # sampleId = urlparse.urlparse(url).path
+            samplePhotoData = {}
+            # #-----------
             #visit all photos of liker
-            print('Visiting all photos of', sampleId)
-            if sampleId == '/luminousbhuwan' or sampleId == '/profile.php' or sampleId == '/photo.php': continue
-            self.browser.get('https://www.facebook.com'+sampleId+'/photos_all')
+            sampleId = url
+            print('Visiting all photo samples of', sampleId)
+            if sampleId == myId or sampleId == '/profile.php' or sampleId == '/photo.php': continue
+            self.browser.get('https://www.facebook.com/'+sampleId+'/photos_all')
             
             #visit one photo of liker
             photosOfLiker =  self.browser.find_elements_by_class_name("uiMediaThumbMedium")
-            if  len(photosOfLiker) < 2 : continue
+            if  len(photosOfLiker) < 2 :
+                print('User has no photos to load load')
+                continue
             photoOfLiker = photosOfLiker[1]
             # photoOfLiker.click()
             self.browser.get(photoOfLiker.get_attribute('href'))
@@ -120,8 +128,10 @@ class instaBot():
             #visit to the list of secondary likers
             delay(2)
             clickButtons = self.browser.find_elements_by_class_name("_3dlf")
-            print('lenght of buttons is', len(clickButtons))
-            if len(clickButtons) < 2: continue
+            print('Length of buttons is', len(clickButtons))
+            if len(clickButtons) < 2:
+                print("Cannot enter into the list of likers")
+                continue
             likeNumber2= clickButtons[1]
             likeNumber2.click()
             print('Seeing Likers of a photo of', sampleId)
@@ -134,11 +144,14 @@ class instaBot():
                 try:
                     delay(3)
                     samples =  self.browser.find_elements_by_class_name("uiMorePagerPrimary")[0]
-                    jsCode = "document.getElementsByClassName('uiMorePagerPrimary')[0].click();"
+                    samples =  self.browser.find_elements_by_class_name("pam")[0]
+                    samples =  self.browser.find_elements_by_class_name("uiBoxLightblue")[0]
+                    jsCode = "document.getElementsByClassName('uiBoxLightblue pam uiMorePagerPrimary')[0].click();"
                     self.browser.execute_script(jsCode)
+                    print("Loading more likers of the sample photo")
                 except:
-                    print("No more likers to load in the page")
                     moreLikers = False
+                    print("No more likers to load in the page")
         
         
             #get all secondary likers
@@ -164,7 +177,7 @@ class instaBot():
             
             # add sample photo data to main data
             mainData.append(samplePhotoData)
-            with open('mainData.json', 'w') as f:
+            with open('mainData2.json', 'w') as f:
                 json.dump(mainData, f, ensure_ascii=False, indent = 3)
             # print(json.dumps(mainData, indent = 4))
             
@@ -173,27 +186,15 @@ class instaBot():
 # use conda to store keys
 # get 4 girls from each batch
 # get likers(username, name, profilepic ) of those photos
-# czon.baral  anita.baral.7374   navina456
+# 
 
 
 
 
 
 
+myInstaBot = instaBot(myEmail, myPassword)
 
-
-
-
-
-
-
-
-
-
-
-
-
-myInstaBot = instaBot('test@gmail.com', 'pristabhumi#$$#$#')
 myInstaBot.signIn()
 # myInstaBot.closePopup()
 # myInstaBot.goProfile()
