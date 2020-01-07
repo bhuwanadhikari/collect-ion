@@ -5,11 +5,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 import time
+from datetime import datetime
 import json
 import urlparse
 
-with open('members.json') as membersList:
-    members = json.load(membersList)
+with open('samples.json') as f0:
+    samplesPhotos = json.load(f0)
 
 
 # driver = webdriver.Chrome()
@@ -26,10 +27,7 @@ def delay( timeValue):
         time.sleep(timeValue)
         
 ## global variables here
-startUrl = 'https://www.facebook.com/photo.php?fbid=2193040064331951&set=a.1377214452581187&type=3&theater'
-myId = 'asdf.asdfw.asdf'
-myEmail = 'teasdfasst@gmail.com'
-myPassword = 'asdfasdfasddf'
+
 
 class instaBot():
     def __init__(self, email, password):
@@ -39,6 +37,7 @@ class instaBot():
         self.email = email
         self.password = password
         self.sampleFriends = []
+        self.startTime = datetime.now().strftime("%H:%M")
         
 
     def signIn(self):
@@ -63,41 +62,43 @@ class instaBot():
         delay(2)
         
     def goToPhoto(self):
-        self.browser.get(startUrl)
-        # see likers
-        delay(2)
-        likeNumber1 = self.browser.find_elements_by_class_name("_3dlf")[1]
-        likeNumber1.click()
-        delay(3)
+        # self.browser.get(startUrl)
+        # # see likers
+        # delay(2)
+        # likeNumber1 = self.browser.find_elements_by_class_name("_3dlf")[1]
+        # likeNumber1.click()
+        # delay(3)
         
-        #click the more samples
-        moreSamples = True
-        while moreSamples:
-            try:
-                delay(3)
-                samples =  self.browser.find_elements_by_class_name("uiMorePagerPrimary")[0]
-                samples =  self.browser.find_elements_by_class_name("pam")[0]
-                samples =  self.browser.find_elements_by_class_name("uiBoxLightblue")[0]
-                jsCode = "document.getElementsByClassName('uiBoxLightblue pam uiMorePagerPrimary')[0].click();"
-                self.browser.execute_script(jsCode)
-                print("Loading more samples of the start photo")
-            except:
-                moreSamples = False
-                print("No more samples to load in the page")
+        # #click the more samples
+        # moreSamples = True
+        # while moreSamples:
+        #     try:
+        #         delay(3)
+        #         samples =  self.browser.find_elements_by_class_name("uiMorePagerPrimary")[0]
+        #         samples =  self.browser.find_elements_by_class_name("pam")[0]
+        #         samples =  self.browser.find_elements_by_class_name("uiBoxLightblue")[0]
+        #         jsCode = "document.getElementsByClassName('uiBoxLightblue pam uiMorePagerPrimary')[0].click();"
+        #         self.browser.execute_script(jsCode)
+        #         print("Loading more samples of the start photo")
+        #     except:
+        #         moreSamples = False
+        #         print("No more samples to load in the page")
             
-        #get primary likers
-        delay(2)
-        samples =  self.browser.find_elements_by_class_name("_5i_s")
-        sampleUrls = []
-        for sample in samples:
-            sampleUrl = sample.get_attribute('href')
-            sampleUrls.append(sampleUrl)
+        # #get primary likers
+        # delay(2)
+        # samples =  self.browser.find_elements_by_class_name("_5i_s")
+        # sampleUrls = []
+        # for sample in samples:
+        #     sampleUrl = sample.get_attribute('href')
+        #     sampleUrls.append(sampleUrl)
             
             
-        mainData = []
+        data = []
+        doneSamples = []
+        counter = 0
         # for url in sampleUrls:
-        for url in members:
-            
+        for url in samplesPhotos:
+                
             #visit one of the liker
             # self.browser.get(url)
             
@@ -124,7 +125,7 @@ class instaBot():
             print('Visiting a single photo of', sampleId)
             
             
-           
+        
             #visit to the list of secondary likers
             delay(2)
             clickButtons = self.browser.find_elements_by_class_name("_3dlf")
@@ -138,11 +139,10 @@ class instaBot():
             delay(2)
             
             #click the more likers
-            delay(2)
             moreLikers = True
             while moreLikers:
                 try:
-                    delay(3)
+                    delay(2)
                     samples =  self.browser.find_elements_by_class_name("uiMorePagerPrimary")[0]
                     samples =  self.browser.find_elements_by_class_name("pam")[0]
                     samples =  self.browser.find_elements_by_class_name("uiBoxLightblue")[0]
@@ -158,14 +158,12 @@ class instaBot():
             likers = self.browser.find_elements_by_class_name("_5i_s")
             
             
-            likersUrl =[]
             likersId =[]
             
             for liker in likers:
                 likerUrl = liker.get_attribute('href')
                 likerId = urlparse.urlparse(likerUrl).path
-                print('secondary liker is', likerId)
-                likersUrl.append(likerUrl)
+                print('Liker is ', likerId)
                 likersId.append(likerId)
         
             # make sample photo data ready
@@ -175,14 +173,42 @@ class instaBot():
             # samplePhotoData['likersUrl'] = likersUrl
             samplePhotoData['likersId'] = likersId
             
+            print('----------------------------------------------------------------')
+            print('----------------------------------------------------------------')
+            
+            try:
+                with open('data.json') as f1:
+                    data = json.load(f1)
+                data.append(samplePhotoData)
+                print('-----Total Samples: ', len(data), '--------')
+            except:
+                
+                print('Error in main data opening')
+            
             # add sample photo data to main data
-            mainData.append(samplePhotoData)
-            with open('mainData2.json', 'w') as f:
-                json.dump(mainData, f, ensure_ascii=False, indent = 3)
-            # print(json.dumps(mainData, indent = 4))
+            with open('data.json', 'w') as f2:
+                json.dump(data, f2, ensure_ascii=False, indent = 3)
             
             
-
+            with open('samples.json') as f11:
+                allSamples = json.load(f11)
+            allSamples.remove(url)
+            
+            with open('samples.json', 'w') as f12:
+                json.dump(allSamples, f12, ensure_ascii=False, indent = 3)
+                
+            counter += 1
+            
+            print("-----Completed Samples: ", counter, '-----')
+            print("-----Started Time is: ", self.startTime, '---')
+            print('----------------------------------------------------------------')
+            print('----------------------------------------------------------------')
+            
+            if counter >= 40:
+                print("Warning may arise!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                return
+            
+            
 # use conda to store keys
 # get 4 girls from each batch
 # get likers(username, name, profilepic ) of those photos
