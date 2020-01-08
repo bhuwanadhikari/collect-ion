@@ -4,7 +4,7 @@ from datetime import date
 # with open('mainData.json') as f:
 #   mainData = json.load(f)
 
-
+# FIND OUT THE GIRLS THE LIST
 # girls = []
 # for person in mainData:
 #     for liker in person['likersId']:
@@ -14,15 +14,28 @@ from datetime import date
 #             girls.append(name[1])
             
 # print("pathak has", len(girls), 'girlfriends')
+
+
+
+#LOAD MEMBERS OF MENS ROOM 1
 # with open('mensroomNew.json') as mensroomNew:
 #     mensroomNew = json.load(mensroomNew)
+    
+    
+#LOAD MEMBERS OF MENS ROOM 2
     
 # with open('mensroom.json') as mensroom:
 #     mensroom = json.load(mensroom)
     
+    
+    
+#LOAD MEMBERS OF STUDENT SOCIETY
 # with open('members.json') as members:
 #     members = json.load(members)
-    
+   
+   
+   
+#    ----------------- 
 # print('List of intersection are', len(list(set(mensroomNew) & set(mensroom) & set(members))))
 # samples = list(set().union(mensroom, mensroomNew, members))
     
@@ -32,10 +45,10 @@ from datetime import date
 # with open('samples.json', 'w') as f:
 #     json.dump(samples, f, ensure_ascii=False, indent = 3)
 
-with open ('mainData.json') as mainData:
-    mainData = json.load(mainData)
-print(mainData)
+# ----------------------
     
+    
+#MAKE THE DATA READY FOR MINING
 # with open ('mainData2.json') as mainData2:
 #     mainData2 = json.load(mainData2)
     
@@ -73,14 +86,6 @@ print(mainData)
 
 
 
-
-
-
-
-
-
-
-
 # notDone = list(set(samples)-set(alreadyDone))
 
 
@@ -106,3 +111,81 @@ print(mainData)
 # for i in alreadyDone:
 #     print(i)
 # print(len(alreadyDone))
+
+
+
+# //FILTER OUT THE PHOTO.PHP AND PROFILE.PHP
+# with open ('data.json') as data:
+#     data = json.load(data)
+
+
+# newData = []
+
+# count = 0
+# for one in data:
+#     # print(one['likersId'])
+#     allLikers = one['likersId']
+#     for euta in allLikers:
+        
+        
+#         if euta == '/photo.php':
+#             count += 1
+#             allLikers.remove('/photo.php')
+        
+#         if euta == '/profile.php':
+#             count += 1
+#             allLikers.remove('/profile.php')
+    
+    
+#     sampleData = {
+#         "photoOf" : one['photoOf'],
+#         "likersId" : allLikers
+#     }        
+#     newData.append(sampleData)
+# print(count)
+
+# with open('data.json', 'w') as ff:
+#     json.dump(newData, ff, ensure_ascii=False, indent = 3)
+
+
+# GENERATE FAKE LIST OF GIRLS
+# with open ('data.json') as data:
+#     data = json.load(data)
+    
+# count = 0
+# girls = []
+# for one in data:
+#     allLikers = one['likersId']
+#     for euta in allLikers:
+#         if euta.split('.')[0][-1] == 'a' or euta.split('.')[0][-1] == 'i':
+#             # print(euta)
+#             count += 1
+#             girls.append(euta)
+            
+# with open('fakeGirls.json', 'w') as ff:
+#     json.dump(girls, ff, ensure_ascii=False, indent = 3)
+
+# print(count)
+        
+        
+
+# FIND OUT PEOPLE FROM WRC
+with open ('data.json') as data:
+    data = json.load(data)
+    
+count = 0
+girls = []
+for one in data:
+    allLikers = one['likersId']
+    for euta in allLikers:
+        if euta.split('.')[0][-1] == 'a' or euta.split('.')[0][-1] == 'i':
+            # print(euta)
+            count += 1
+            girls.append(euta)
+            
+with open('fakeGirls.json', 'w') as ff:
+    json.dump(girls, ff, ensure_ascii=False, indent = 3)
+
+print(count)
+        
+        

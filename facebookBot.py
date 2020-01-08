@@ -27,7 +27,10 @@ def delay( timeValue):
         time.sleep(timeValue)
         
 ## global variables here
-
+startUrl = 'https://www.facebook.com/photo.php?fbid=2193040064331951&set=a.1377214452581187&type=3&theater'
+myId = 'yourusername'
+myEmail = 'youremail@gmail.com'
+myPassword = 'yourfbpassword'
 
 class instaBot():
     def __init__(self, email, password):
@@ -60,6 +63,15 @@ class instaBot():
     def goProfile(self):
         # self.browser.get('https://www.instagram.com/testman/')
         delay(2)
+        
+    def updateSamples(self, urlToBeRemoved):
+        with open('samples.json') as f11:
+            allSamples = json.load(f11)
+        allSamples.remove(urlToBeRemoved)
+            
+        with open('samples.json', 'w') as f12:
+            json.dump(allSamples, f12, ensure_ascii=False, indent = 3)
+                
         
     def goToPhoto(self):
         # self.browser.get(startUrl)
@@ -118,6 +130,7 @@ class instaBot():
             photosOfLiker =  self.browser.find_elements_by_class_name("uiMediaThumbMedium")
             if  len(photosOfLiker) < 2 :
                 print('User has no photos to load load')
+                self.updateSamples(url)
                 continue
             photoOfLiker = photosOfLiker[1]
             # photoOfLiker.click()
@@ -132,6 +145,7 @@ class instaBot():
             print('Length of buttons is', len(clickButtons))
             if len(clickButtons) < 2:
                 print("Cannot enter into the list of likers")
+                self.updateSamples(url)
                 continue
             likeNumber2= clickButtons[1]
             likeNumber2.click()
@@ -140,6 +154,8 @@ class instaBot():
             
             #click the more likers
             moreLikers = True
+            limitLoad = 0
+            # while moreLikers and limitLoad<1:
             while moreLikers:
                 try:
                     delay(2)
@@ -149,6 +165,9 @@ class instaBot():
                     jsCode = "document.getElementsByClassName('uiBoxLightblue pam uiMorePagerPrimary')[0].click();"
                     self.browser.execute_script(jsCode)
                     print("Loading more likers of the sample photo")
+                  
+                    moreLikers = False
+                    
                 except:
                     moreLikers = False
                     print("No more likers to load in the page")
@@ -190,13 +209,8 @@ class instaBot():
                 json.dump(data, f2, ensure_ascii=False, indent = 3)
             
             
-            with open('samples.json') as f11:
-                allSamples = json.load(f11)
-            allSamples.remove(url)
+            self.updateSamples(url)
             
-            with open('samples.json', 'w') as f12:
-                json.dump(allSamples, f12, ensure_ascii=False, indent = 3)
-                
             counter += 1
             
             print("-----Completed Samples: ", counter, '-----')
@@ -204,7 +218,7 @@ class instaBot():
             print('----------------------------------------------------------------')
             print('----------------------------------------------------------------')
             
-            if counter >= 40:
+            if counter >= 300:
                 print("Warning may arise!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 return
             
