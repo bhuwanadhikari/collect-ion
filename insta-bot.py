@@ -41,7 +41,7 @@ class instaBot():
         delay(2)
     
     def goProfile(self):
-        self.browser.get('https://www.instagram.com/luminousbhuwan/')
+        self.browser.get('https://www.instagram.com/asdfasdf/')
         delay(2)
         
     def goToPhoto(self):
@@ -58,7 +58,7 @@ class instaBot():
         for person in people:
             personId = person.get_attribute('href')
             
-            if personId != None and personId != 'https://www.instagram.com/luminousbhuwan/':
+            if personId != None and personId != 'https://www.instagram.com/asdfasdfasdf/':
                 likers.append(personId)
         
         samplePhotos = []

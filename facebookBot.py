@@ -28,9 +28,9 @@ def delay( timeValue):
         
 ## global variables here
 startUrl = 'https://www.facebook.com/photo.php?fbid=2193040064331951&set=a.1377214452581187&type=3&theater'
-myId = 'yourusername'
-myEmail = 'youremail@gmail.com'
-myPassword = 'yourfbpassword'
+myId = 'asdfasdfasdf'
+myEmail = 'asdfasdf@gmail.com'
+myPassword = 'asdfasdf@#'
 
 class instaBot():
     def __init__(self, email, password):
@@ -128,11 +128,11 @@ class instaBot():
             
             #visit one photo of liker
             photosOfLiker =  self.browser.find_elements_by_class_name("uiMediaThumbMedium")
-            if  len(photosOfLiker) < 2 :
+            if  len(photosOfLiker) < 1 :
                 print('User has no photos to load load')
                 self.updateSamples(url)
                 continue
-            photoOfLiker = photosOfLiker[1]
+            photoOfLiker = photosOfLiker[0]
             # photoOfLiker.click()
             self.browser.get(photoOfLiker.get_attribute('href'))
             print('Visiting a single photo of', sampleId)
@@ -166,7 +166,6 @@ class instaBot():
                     self.browser.execute_script(jsCode)
                     print("Loading more likers of the sample photo")
                   
-                    moreLikers = False
                     
                 except:
                     moreLikers = False
@@ -182,8 +181,13 @@ class instaBot():
             for liker in likers:
                 likerUrl = liker.get_attribute('href')
                 likerId = urlparse.urlparse(likerUrl).path
-                print('Liker is ', likerId)
-                likersId.append(likerId)
+                if likerId !='/photo.php':
+                    if likerId == '/profile.php':
+                        likerId = likerUrl.split('?')[1]
+                        likerId = likerId.split('&')[0]
+                        likerId = '/'+likerId.split('=')[1]
+                    print('Liker is ', likerId)
+                    likersId.append(likerId)
         
             # make sample photo data ready
             
@@ -218,7 +222,7 @@ class instaBot():
             print('----------------------------------------------------------------')
             print('----------------------------------------------------------------')
             
-            if counter >= 300:
+            if counter >= 30:
                 print("Warning may arise!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 return
             

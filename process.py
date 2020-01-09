@@ -166,26 +166,72 @@ from datetime import date
 #     json.dump(girls, ff, ensure_ascii=False, indent = 3)
 
 # print(count)
+
+
+
+
+
+
+# REMOVE DATA OF GENUINE PEOPLE
+# with open('data.json') as data:
+#     data = json.load(data)
+
+# with open('genuineSamples.json') as fff:
+#     genuines = json.load(fff)
+    
+# donePeople = []
+# count = 0
+# for one in data:
+#     donePeople.append('/' + one['photoOf'])
+
+# for gen in genuines:
+#     if gen in donePeople:
+#         count +=1
+#         print(gen, count)
+    
+
+
+
         
         
 
 # FIND OUT PEOPLE FROM WRC
-with open ('data.json') as data:
+with open ('genuineData.json') as data:
     data = json.load(data)
     
 count = 0
-girls = []
+wrcians = []
+allPeople = []
+doneSamples = []
 for one in data:
     allLikers = one['likersId']
-    for euta in allLikers:
-        if euta.split('.')[0][-1] == 'a' or euta.split('.')[0][-1] == 'i':
-            # print(euta)
-            count += 1
-            girls.append(euta)
-            
-with open('fakeGirls.json', 'w') as ff:
-    json.dump(girls, ff, ensure_ascii=False, indent = 3)
+    allPeople  = allPeople + allLikers
+    doneSamples.append(one['photoOf'])
 
-print(count)
-        
+sampleSet = list(set(doneSamples))
+unArr = []
+print(len(doneSamples))
+for one in data:
+    if one['photoOf'] in unArr:
+        print('duplicate', one['photoOf'])
+    else:
+        unArr.append(one['photoOf'])
+for liker in allPeople:
+    count = 0
+    for item in data:
+        if liker in item['likersId']:
+            count += 1 
+    if(count>2):
+        wrcians.append(liker)
+
+wrcians = list(set(wrcians))
+
+for pal in wrcians:
+    print(pal)
+    # fn = pal.split('.')[0]
+    # if fn[-1] == 'a' or fn[-1] == 'i':
+    
+    
+print(len(wrcians))
+# print(len(list(set(doneSamples))))
         
