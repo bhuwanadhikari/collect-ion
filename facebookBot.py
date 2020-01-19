@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 from datetime import datetime
 import json
-import urlparse
+from urllib.parse import urlparse
 
 with open('samples.json') as f0:
     samplesPhotos = json.load(f0)
@@ -27,10 +27,10 @@ def delay( timeValue):
         time.sleep(timeValue)
         
 ## global variables here
-startUrl = 'https://www.facebook.com/photo.php?fbid=2193040064331951&set=a.1377214452581187&type=3&theater'
-myId = 'asdfasdfasdf'
-myEmail = 'asdfasdf@gmail.com'
-myPassword = 'asdfasdf@#'
+startUrl = 'https://www.facebook.com'
+myId = 'yourusername'
+myEmail = 'yourdamnemail@gmail.com'
+myPassword = 'yourpassword'
 
 class instaBot():
     def __init__(self, email, password):
@@ -110,6 +110,7 @@ class instaBot():
         counter = 0
         # for url in sampleUrls:
         for url in samplesPhotos:
+            counter += 1
                 
             #visit one of the liker
             # self.browser.get(url)
@@ -117,7 +118,7 @@ class instaBot():
             #get username of liker
             
             #-----------------------
-            # sampleId = urlparse.urlparse(url).path
+            # sampleId = urlparse(url).path
             samplePhotoData = {}
             # #-----------
             #visit all photos of liker
@@ -180,7 +181,7 @@ class instaBot():
             
             for liker in likers:
                 likerUrl = liker.get_attribute('href')
-                likerId = urlparse.urlparse(likerUrl).path
+                likerId = urlparse(likerUrl).path
                 if likerId !='/photo.php':
                     if likerId == '/profile.php':
                         likerId = likerUrl.split('?')[1]
@@ -215,14 +216,13 @@ class instaBot():
             
             self.updateSamples(url)
             
-            counter += 1
             
             print("-----Completed Samples: ", counter, '-----')
             print("-----Started Time is: ", self.startTime, '---')
             print('----------------------------------------------------------------')
             print('----------------------------------------------------------------')
             
-            if counter >= 30:
+            if counter >= 70:
                 print("Warning may arise!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 return
             
