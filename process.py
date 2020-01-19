@@ -196,42 +196,75 @@ from datetime import date
         
 
 # FIND OUT PEOPLE FROM WRC
-with open ('genuineData.json') as data:
+with open ('data.json') as data:
     data = json.load(data)
-    
+
+
+with open ('genuineData.json') as genuineData:
+    genuineData = json.load(genuineData)
+
 count = 0
 wrcians = []
 allPeople = []
 doneSamples = []
+genuineSamples = []
+
+genuineData2 = []
+data2 = []
+
+
 for one in data:
     allLikers = one['likersId']
     allPeople  = allPeople + allLikers
+    one['photoOf'] = '/'+one['photoOf']
+    data2.append(one)
     doneSamples.append(one['photoOf'])
+    
+with open('data2.json', 'w') as ff1:
+    json.dump(data2, ff1, ensure_ascii=False, indent = 3)
 
-sampleSet = list(set(doneSamples))
-unArr = []
-print(len(doneSamples))
-for one in data:
-    if one['photoOf'] in unArr:
-        print('duplicate', one['photoOf'])
-    else:
-        unArr.append(one['photoOf'])
-for liker in allPeople:
-    count = 0
-    for item in data:
-        if liker in item['likersId']:
-            count += 1 
-    if(count>2):
-        wrcians.append(liker)
+for one in genuineData:
+    allLikers = one['likersId']
+    allPeople  = allPeople + allLikers
+    one['photoOf'] = '/'+one['photoOf']
+    genuineData2.append(one)
+    genuineSamples.append(one['photoOf'])
 
-wrcians = list(set(wrcians))
+    
+with open('genuineData2.json', 'w') as ff2:
+    json.dump(genuineData2, ff2, ensure_ascii=False, indent = 3)
 
-for pal in wrcians:
-    print(pal)
-    # fn = pal.split('.')[0]
-    # if fn[-1] == 'a' or fn[-1] == 'i':
+
+
+for gen in genuineSamples:
+    if gen in doneSamples:
+        print(gen)
+
+
+# sampleSet = list(set(doneSamples))
+# unArr = []
+# print(len(doneSamples))
+# for one in data:
+#     if one['photoOf'] in unArr:
+#         print('duplicate', one['photoOf'])
+#     else:
+#         unArr.append(one['photoOf'])
+# for liker in allPeople:
+#     count = 0
+#     for item in data:
+#         if liker in item['likersId']:
+#             count += 1 
+#     if(count>4):
+#         wrcians.append(liker)
+
+# wrcians = list(set(wrcians))
+
+# for pal in wrcians:
+#     print(pal)
+#     # fn = pal.split('.')[0]
+#     # if fn[-1] == 'a' or fn[-1] == 'i':
     
     
-print(len(wrcians))
+# print(len(wrcians))
 # print(len(list(set(doneSamples))))
         
