@@ -13,7 +13,7 @@ from datetime import date
 #             name = firstName[0].split('/')
 #             girls.append(name[1])
             
-# print("pathak has", len(girls), 'girlfriends')
+# print("he has", len(girls), 'girlfriends')
 
 
 
@@ -195,6 +195,54 @@ from datetime import date
         
         
 
+# # DATA READY FOR THE PROCESSING
+# with open ('data.json') as data:
+#     data = json.load(data)
+
+
+# with open ('genuineData.json') as genuineData:
+#     genuineData = json.load(genuineData)
+
+# count = 0
+# wrcians = []
+# allPeople = []
+# doneSamples = []
+# genuineSamples = []
+
+# genuineData2 = []
+# data2 = []
+
+
+# for one in data:
+#     allLikers = one['likersId']
+#     allPeople  = allPeople + allLikers
+#     one['photoOf'] = '/'+one['photoOf']
+#     data2.append(one)
+#     doneSamples.append(one['photoOf'])
+    
+# with open('data2.json', 'w') as ff1:
+#     json.dump(data2, ff1, ensure_ascii=False, indent = 3)
+
+# for one in genuineData:
+#     allLikers = one['likersId']
+#     allPeople  = allPeople + allLikers
+#     one['photoOf'] = '/'+one['photoOf']
+#     genuineData2.append(one)
+#     genuineSamples.append(one['photoOf'])
+
+    
+# with open('genuineData2.json', 'w') as ff2:
+#     json.dump(genuineData2, ff2, ensure_ascii=False, indent = 3)
+
+
+
+# for gen in genuineSamples:
+#     if gen in doneSamples:
+#         print(gen)
+
+       
+        
+
 # FIND OUT PEOPLE FROM WRC
 with open ('data.json') as data:
     data = json.load(data)
@@ -203,68 +251,70 @@ with open ('data.json') as data:
 with open ('genuineData.json') as genuineData:
     genuineData = json.load(genuineData)
 
-count = 0
+
+#merge genuineData and data
+data = data+genuineData
+
+
 wrcians = []
+
+#get genuine wrcians
+for genuinePhoto in genuineData:
+    wrcians.append(genuinePhoto['photoOf'])
+
+
 allPeople = []
 doneSamples = []
-genuineSamples = []
-
-genuineData2 = []
-data2 = []
-
-
+allLikers = []
+#get wrcians from data
 for one in data:
     allLikers = one['likersId']
     allPeople  = allPeople + allLikers
-    one['photoOf'] = '/'+one['photoOf']
-    data2.append(one)
     doneSamples.append(one['photoOf'])
-    
-with open('data2.json', 'w') as ff1:
-    json.dump(data2, ff1, ensure_ascii=False, indent = 3)
 
+for liker in allPeople:
+    count = 0
+    for item in data:
+        if liker in item['likersId']:
+            count += 1 
+    if(count>3):
+        wrcians.append(liker)
+    
+
+
+
+
+allPeople = []
+allLikers = []
+doneSamples = []
+#get wrcians from genuineData
 for one in genuineData:
     allLikers = one['likersId']
     allPeople  = allPeople + allLikers
-    one['photoOf'] = '/'+one['photoOf']
-    genuineData2.append(one)
-    genuineSamples.append(one['photoOf'])
+    doneSamples.append(one['photoOf'])
 
+for liker in allPeople:
+    count = 0
+    for item in genuineData:
+        if liker in item['likersId']:
+            count += 1 
+    if(count>2):
+        wrcians.append(liker)
     
-with open('genuineData2.json', 'w') as ff2:
-    json.dump(genuineData2, ff2, ensure_ascii=False, indent = 3)
 
 
+wrcians = list(set(wrcians))
 
-for gen in genuineSamples:
-    if gen in doneSamples:
-        print(gen)
-
-
-# sampleSet = list(set(doneSamples))
-# unArr = []
-# print(len(doneSamples))
-# for one in data:
-#     if one['photoOf'] in unArr:
-#         print('duplicate', one['photoOf'])
-#     else:
-#         unArr.append(one['photoOf'])
-# for liker in allPeople:
-#     count = 0
-#     for item in data:
-#         if liker in item['likersId']:
-#             count += 1 
-#     if(count>4):
-#         wrcians.append(liker)
-
-# wrcians = list(set(wrcians))
-
-# for pal in wrcians:
-#     print(pal)
-#     # fn = pal.split('.')[0]
-#     # if fn[-1] == 'a' or fn[-1] == 'i':
+for pal in wrcians:
+    print(pal)
+    # fn = pal.split('.')[0]
+    # if fn[-1] == 'a' or fn[-1] == 'i':
     
     
-# print(len(wrcians))
+print(len(wrcians))
 # print(len(list(set(doneSamples))))
+
+    
+with open('wrcians.json', 'w') as ff3:
+    json.dump(wrcians, ff3, ensure_ascii=False, indent = 3)
         
