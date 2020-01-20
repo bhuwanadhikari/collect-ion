@@ -8,16 +8,16 @@ from selenium.webdriver.chrome.options import Options
 import time
 from datetime import datetime
 import json
-import urlparse
+from urllib.parse import urlparse
 
 
 def delay( timeValue):
     time.sleep(timeValue)
         
 
-myId = 'asdfasdf'
-myEmail = 'asdfasd@gmail.com'
-myPassword = 'asdfasdf'
+myId = 'YOURID'
+myEmail = 'TESTAADS@gmail.com'
+myPassword = 'PAPAERSE34R3'
 
 class detailsBot():
     def __init__(self, email, password):
@@ -36,22 +36,80 @@ class detailsBot():
         passwordInput.send_keys(self.password)
         passwordInput.send_keys(Keys.ENTER)
         delay(2)
+        
+    def updateWrcians(self, usernameToBeRemoved):
+        with open('wrcians2.json') as ff11:
+            bakiWrcians = json.load(ff11)
+        bakiWrcians.remove(usernameToBeRemoved)
+            
+        with open('wrcians2.json', 'w') as ff22:
+            json.dump(bakiWrcians, ff22, ensure_ascii=False, indent = 3)
+          
+    
+    
     
     def crawl(self):
-        # with open('wrcians.json') as f11:
-        #     allSamples = json.load(f11)
         
-        self.browser.get('https://www.facebook.com/'+'asdfasdfasdfasdfasdfasdfasdf')
-        # self.browser.send_keys(Keys.CONTROL + 'r')
-        fullName = self.browser.title.split('|')[0]
+        doneCounter = 0
         
-        # photoElement = self.browser.find_elements_by_xpath("//*[@class='_11kf']")[0]
-        photoElement = self.browser.find_elements_by_class_name("_11kf")[0]
-        photoSrc = photoElement.get_attribute('src')
-        print (fullName)
-        print(photoSrc)
-        self.browser.get(photoSrc)
+        with open('wrcians2.json') as f11:
+            dumbas = json.load(f11)
         
+        for dumba in dumbas:
+            self.browser.get('https://www.facebook.com'+dumba)
+            fullName = self.browser.title.split('|')[0]
+            if fullName[0] == '(':
+                fullName = fullName.split(') ')[-1]
+            profilePic = self.browser.find_elements_by_class_name("profilePicThumb")[0]
+            profilePic.click()
+            pictureUrl = ''
+            alt = 'test'
+            
+            looper = True
+            while looper:
+                try:
+                    picture = self.browser.find_elements_by_class_name("spotlight")[0]
+                    pictureUrl = picture.get_attribute("src")
+                except:
+                    picture = self.browser.find_elements_by_tag_name("img")[-1]
+                    pictureUrl = picture.get_attribute("src")
+                
+                shouldILoop = ('https://static.xx.' in pictureUrl) or \
+                    ('https://scontent.fktm3-1.fna.fbcdn.net/v/t1.0-1/cp0' in pictureUrl) or \
+                    ('https://scontent.fktm3-1.fna.fbcdn.net/v/t31.0-1/cp0' in pictureUrl)
+                
+                if not shouldILoop:
+                    print(pictureUrl)   
+                    print (fullName)
+                    looper = False
+                    
+                    with open('dumbasData.json', encoding="utf-8") as file1:
+                        dumbasData = json.load(file1)
+                        
+                    dumbasData.append({
+                        'username': dumba,
+                        'name':fullName,
+                        'pictureUrl': pictureUrl
+                    })
+                    
+                    with open('dumbasData.json', 'w', encoding="utf-8") as file2:
+                        json.dump(dumbasData, file2, ensure_ascii=False, indent = 3)
+                        
+                    self.updateWrcians(dumba)
+                    
+                     
+                    
+                    doneCounter += 1
+                    print('----------------------------------------------------------------')
+                    print('----------------------------------------------------------------')                    
+                    print("-----Mined Total:      ", len(dumbasData), '-----')
+                    print("-----Mined Today:      ", doneCounter, '-----')
+                    print("-----Left To Mine:     ", len(dumbas), '-----')
+                    print("-----Total Candidates: ", 1987, '-----')
+                    print("-----Started Time is:  ", self.startTime, '---')
+                    print('----------------------------------------------------------------')
+                    print('----------------------------------------------------------------')
+                    
             
 
 myBot = detailsBot(myEmail, myPassword)

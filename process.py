@@ -266,19 +266,27 @@ for genuinePhoto in genuineData:
 allPeople = []
 doneSamples = []
 allLikers = []
+samples = []
 #get wrcians from data
 for one in data:
     allLikers = one['likersId']
     allPeople  = allPeople + allLikers
     doneSamples.append(one['photoOf'])
+    samples.append(one['photoOf'])
+    
+allPeople = list(set(allPeople))
 
 for liker in allPeople:
     count = 0
     for item in data:
         if liker in item['likersId']:
             count += 1 
+    if liker in samples:
+        count += 1
     if(count>3):
         wrcians.append(liker)
+        
+        
     
 
 
