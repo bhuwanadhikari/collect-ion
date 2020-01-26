@@ -15,9 +15,8 @@ def delay( timeValue):
     time.sleep(timeValue)
         
 
-myId = 'YOURID'
-myEmail = 'TESTAADS@gmail.com'
-myPassword = 'PAPAERSE34R3'
+myEmail = 'asdfas@gmail.com'
+myPassword = 'asdfasdf'
 
 class detailsBot():
     def __init__(self, email, password):
