@@ -244,47 +244,47 @@ from datetime import date
         
 
 # FIND OUT PEOPLE FROM WRC
-with open ('data.json') as data:
-    data = json.load(data)
+# with open ('data.json') as data:
+#     data = json.load(data)
 
 
-with open ('genuineData.json') as genuineData:
-    genuineData = json.load(genuineData)
+# with open ('genuineData.json') as genuineData:
+#     genuineData = json.load(genuineData)
 
 
-#merge genuineData and data
-data = data+genuineData
+# #merge genuineData and data
+# data = data+genuineData
 
 
-wrcians = []
+# wrcians = []
 
 #get genuine wrcians
-for genuinePhoto in genuineData:
-    wrcians.append(genuinePhoto['photoOf'])
+# for genuinePhoto in genuineData:
+#     wrcians.append(genuinePhoto['photoOf'])
 
 
-allPeople = []
-doneSamples = []
-allLikers = []
-samples = []
-#get wrcians from data
-for one in data:
-    allLikers = one['likersId']
-    allPeople  = allPeople + allLikers
-    doneSamples.append(one['photoOf'])
-    samples.append(one['photoOf'])
+# allPeople = []
+# doneSamples = []
+# allLikers = []
+# samples = []
+# #get wrcians from data
+# for one in data:
+#     allLikers = one['likersId']
+#     allPeople  = allPeople + allLikers
+#     doneSamples.append(one['photoOf'])
+#     samples.append(one['photoOf'])
     
-allPeople = list(set(allPeople))
+# allPeople = list(set(allPeople))
 
-for liker in allPeople:
-    count = 0
-    for item in data:
-        if liker in item['likersId']:
-            count += 1 
-    if liker in samples:
-        count += 1
-    if(count>3):
-        wrcians.append(liker)
+# for liker in allPeople:
+#     count = 0
+    # for item in data:
+    #     if liker in item['likersId']:
+    #         count += 1 
+    # if liker in samples:
+    #     count += 1
+    # if(count>3):
+    #     wrcians.append(liker)
         
         
     
@@ -292,37 +292,86 @@ for liker in allPeople:
 
 
 
-allPeople = []
-allLikers = []
-doneSamples = []
-#get wrcians from genuineData
-for one in genuineData:
-    allLikers = one['likersId']
-    allPeople  = allPeople + allLikers
-    doneSamples.append(one['photoOf'])
+# allPeople = []
+# allLikers = []
+# doneSamples = []
+# #get wrcians from genuineData
+# for one in genuineData:
+#     allLikers = one['likersId']
+#     allPeople  = allPeople + allLikers
+#     doneSamples.append(one['photoOf'])
 
-for liker in allPeople:
-    count = 0
-    for item in genuineData:
-        if liker in item['likersId']:
-            count += 1 
-    if(count>2):
-        wrcians.append(liker)
+# for liker in allPeople:
+#     count = 0
+#     for item in genuineData:
+#         if liker in item['likersId']:
+#             count += 1 
+#     if(count>2):
+#         wrcians.append(liker)
     
 
 
-wrcians = list(set(wrcians))
+# wrcians = list(set(wrcians))
 
-for pal in wrcians:
-    print(pal)
+# for pal in wrcians:
+#     print(pal)
     # fn = pal.split('.')[0]
     # if fn[-1] == 'a' or fn[-1] == 'i':
     
     
-print(len(wrcians))
-# print(len(list(set(doneSamples))))
+# print(len(wrcians))
+# # print(len(list(set(doneSamples))))
 
     
-with open('wrcians.json', 'w') as ff3:
-    json.dump(wrcians, ff3, ensure_ascii=False, indent = 3)
+# with open('wrcians.json', 'w') as ff3:
+#     json.dump(wrcians, ff3, ensure_ascii=False, indent = 3)
         
+
+#GET THE USERS WITH SMALL PHOTOS
+# with open ('dumbasData.json') as ffs:
+#     dumbasData = json.load(ffs)
+
+# wrcians2 = []
+
+# bigrekoCount = 0
+# for dumba in dumbasData:
+#     pictureUrl = dumba['pictureUrl']
+
+#     shouldILoop = ('https://static.xx.' in pictureUrl) or \
+#                         ('https://scontent.fktm3-1.fna.fbcdn.net/v/t1.0-1/cp0' in pictureUrl) or \
+#                         ('c0.0.32.32a/p32x32' in pictureUrl) or \
+#                         ('p32x32' in pictureUrl) or \
+#                         ('p24x24' in pictureUrl) or \
+#                         ('https://scontent.fktm3-1.fna.fbcdn.net/v/t31.0-1/cp0' in pictureUrl)
+
+#     if shouldILoop:
+#         print(dumba['username'])
+#         wrcians2.append(dumba['username'])
+#         bigrekoCount += 1
+
+#     print(bigrekoCount)
+                    
+
+# with open('wrcians2.json', 'w') as ff3:
+#     json.dump(wrcians2, ff3, ensure_ascii=False, indent = 3)
+   
+#REMOVE THE PERSONS WHO HAVE SMALL PHOTOS
+with open ('dumbasData.json') as ffs:
+    dumbasData = json.load(ffs)
+
+with open ('wrcians2.json') as fef:
+    wrcians2 = json.load(fef)
+
+dd2 = []
+
+bigrekoCount = 0
+for dumba in dumbasData:
+    un = dumba['username']
+
+    
+    if not un in wrcians2:
+        dd2.append(dumba)
+                    
+
+with open('dd2.json', 'w') as ff3:
+    json.dump(dd2, ff3, ensure_ascii=False, indent = 3)

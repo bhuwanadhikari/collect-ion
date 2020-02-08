@@ -15,8 +15,8 @@ def delay( timeValue):
     time.sleep(timeValue)
         
 
-myEmail = 'test@gmail.com'
-myPassword = 'asdfwefasdfasdf'
+myEmail = 'reerereerere@gmail.com'
+myPassword = 'asdfawefasdf'
 
 class detailsBot():
     def __init__(self, email, password):
@@ -75,6 +75,9 @@ class detailsBot():
                 
                 shouldILoop = ('https://static.xx.' in pictureUrl) or \
                     ('https://scontent.fktm3-1.fna.fbcdn.net/v/t1.0-1/cp0' in pictureUrl) or \
+                    ('c0.0.32.32a/p32x32' in pictureUrl) or \
+                    ('p32x32' in pictureUrl) or \
+                    ('p24x24' in pictureUrl) or \
                     ('https://scontent.fktm3-1.fna.fbcdn.net/v/t31.0-1/cp0' in pictureUrl)
                 
                 if not shouldILoop:
@@ -104,7 +107,7 @@ class detailsBot():
                     print("-----Mined Total:      ", len(dumbasData), '-----')
                     print("-----Mined Today:      ", doneCounter, '-----')
                     print("-----Left To Mine:     ", len(dumbas), '-----')
-                    print("-----Total Candidates: ", 1987, '-----')
+                    print("-----Total Candidates: ", 40, '-----')
                     print("-----Started Time is:  ", self.startTime, '---')
                     print('----------------------------------------------------------------')
                     print('----------------------------------------------------------------')
